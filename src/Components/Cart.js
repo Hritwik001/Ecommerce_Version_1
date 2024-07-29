@@ -2,12 +2,11 @@ import React from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
 
-
-const Cart = ({ cart, removeFromCart }) => {
-    const total = cart.reduce((sum, product) => sum + product.price, 0);
+const Cart = ({ cart, removeFromCart, updateCartQuantity }) => {
+    const total = cart.reduce((sum, product) => sum + product.price * product.quantity, 0);
 
     const handleBuyNow = () => {
-        toast.success("Thank You for your purchase", {
+        toast.success("Thank you for your purchase", {
             position: "top-center"
         });
     };
@@ -25,6 +24,21 @@ const Cart = ({ cart, removeFromCart }) => {
                             <div>
                                 <h3 className="text-lg font-semibold text-gray-700">{product.title}</h3>
                                 <p className="text-gray-500">${product.price}</p>
+                                <div className="flex items-center mt-2">
+                                    <button
+                                        onClick={() => updateCartQuantity(product.id, product.quantity - 1)}
+                                        className="bg-gray-300 text-gray-700 px-2 py-1 rounded-l-md hover:bg-gray-400"
+                                    >
+                                        -
+                                    </button>
+                                    <span className="px-4 py-1">{product.quantity}</span>
+                                    <button
+                                        onClick={() => updateCartQuantity(product.id, product.quantity + 1)}
+                                        className="bg-gray-300 text-gray-700 px-2 py-1 rounded-r-md hover:bg-gray-400"
+                                    >
+                                        +
+                                    </button>
+                                </div>
                             </div>
                         </div>
                         <button onClick={() => removeFromCart(product.id)} className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-700 transition duration-200">
@@ -46,4 +60,7 @@ const Cart = ({ cart, removeFromCart }) => {
 };
 
 export default Cart;
+
+
+
 
